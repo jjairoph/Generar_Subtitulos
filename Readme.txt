@@ -1,0 +1,1 @@
+A partir de un pedf generar subtitulos en formato srt
