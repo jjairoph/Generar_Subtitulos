@@ -30,7 +30,6 @@ SAP me entrega el script así:
 unit we'd like to show you
 00:00:18 where you can find, browse, download and how to navigate the packaged SAP rapid
 deployment solution content.
-
 Necesito colocar salto de línea al final de los caracteres de tiempo
 
 ============================================================================"""
@@ -39,9 +38,13 @@ import os #Para poder mostrar la ruta al archivo
 import re #Para expresiones regulares
 import bdb #Debug
 
+from datetime import datetime, date, time, timedelta
+
+
 #Nombre archivo por defecto
-default = "Week1unit3.txt"
+default = "WEEK1UNIT4.txt"
 k_expresion = '\d\d[:]\d\d[:]\d\d'
+k_duracion_subt = 5
 
 #Archivo origen que contiene el timing de los videos que se va a convertir en SRT
 filein = input("Nombre archivo origen:  %s"%default )
@@ -59,7 +62,7 @@ f.close()
 
 newdata = filedata
 
-p = re.compile(k_expresion) 
+p = re.compile(k_expresion)
 i = 0
 iterator = p.finditer(filedata)
 for match in iterator:
@@ -68,16 +71,17 @@ for match in iterator:
     print( match.start())#Donde comienza el string que concuerda
     print( match.end())#Donde termina el string que concuerda
     cadena = match.string[match.start(): match.end()]
-    cadena1 = '\n' + str(i) + '\n' + cadena + ",000 --> " + cadena + ",999" + '\n'
-    newdata = newdata.replace(cadena, cadena1)
+    partes = cadena.split(':')
+    print(partes)
+    t = datetime(100,1,1, int(partes[0]), int(partes[1]), int(partes[2]))
+    t1 = t + timedelta(seconds=k_duracion_subt)
+    reemplazar = '\n' + str(i) + '\n' + cadena + ",000 --> " + str(t1)[11:19] + ",999" + '\n'#Tiene que haber una mejor manera
+    newdata = newdata.replace(cadena, reemplazar)
     print(cadena)
-    print(cadena1)
-   
-mensaje =  'hay  %s  lineas'   
-print(mensaje %  i)    
+    print(reemplazar)
 
-print(newdata)
-
+mensaje =  'hay  %s  lineas'
+print(mensaje %  i)
 
 ##Abre el archivo en donde se almacenará el archivo de subtitulos
 f2 = open(fileout,'w')
@@ -94,7 +98,7 @@ print ("Archivo procesado:", archivo_salida)
 
 
 
-newdata = filedata.replace('\t','') ##Elimina el caracter tabulador. 
+newdata = filedata.replace('\t','') ##Elimina el caracter tabulador.
 newdata = filedata.replace('\n','') ##Elimina el caracter de salto de linea.
 
 
