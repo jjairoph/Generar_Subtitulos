@@ -1,6 +1,6 @@
 """============================================================================
 Programa para facilitar el formateo de los subtitulos para los videos a partir
-de el archivo transcript que da SAP. Versión 3
+de el archivo transcript que da SAP. Versión 3.
 Fecha creación: 27.01.2015 John Jairo Pachon H.
 El formato del archivo srt mas sencillo es algo así:
 1
