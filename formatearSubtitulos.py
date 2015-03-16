@@ -1,6 +1,6 @@
 """============================================================================
 Programa para facilitar el formateo de los subtitulos para los videos a partir
-de el archivo transcript que da SAP. Versión 3.
+de el archivo transcript que da SAP. Versión 4
 Fecha creación: 27.01.2015 John Jairo Pachon H.
 El formato del archivo srt mas sencillo es algo así:
 1
@@ -36,16 +36,27 @@ deployment solution content.
 
 El ultimo comentario queda mal pues comienza y termina en el mismo momento
 al no haber nada despues del ultimo renglon
+En la versión 4 se puede adelantar o retrasar la sincronizacion general
+para corregir problemas de tiempos mal sincronizados
 ============================================================================"""
 
 import os #Para poder mostrar la ruta al archivo
 import re #Para expresiones regulares
-
+import function_utilities#Funciones creadas por mi
 from datetime import datetime, date, time, timedelta
 
+
 #Nombre archivo por defecto a procesar
-default_file = "w2u1.txt"
-k_expresion = '\d\d[:]\d\d[:]\d\d'#RegEx para identificar hora con minutos y segundos 03:34:10
+default_file = "w2u5.txt"
+#Sin retardo sincronizacion por defecto
+default_sync_time = 0
+
+k_expresion = '\d\d[:]\d\d[:]\d\d'#RegEx para identificar hora con minutos y segundos Ej 03:34:10
+
+sync_time = float(input("Tiempo Sincronización:"))
+#Sin retardo por defecto
+if not sync_time:
+    sync_time = float(default_sync_time)
 
 filein = input("Nombre archivo origen:  %s"%default_file )
 #Archivo origen que contiene el timing de los videos que se va a convertir en SRT
@@ -57,7 +68,8 @@ fileout = input("Nombre archivo con subtitulos corregidos: ")
 fileout = fileout + ".srt"
 
 #Abre el archivo origen en modo lectura
-f = open(filein,'r')
+#f = open(filein,'r')
+f = open(filein, encoding="utf8")#Toco modificar había un caracter de continuación
 filedata = f.read()
 f.close()
 
@@ -84,24 +96,34 @@ for match in iterator:
     print(partes)
     t = datetime(100,1,1, int(partes[0]), int(partes[1]), int(partes[2]))#Inicia speak
     siguiente = i+1
+
     if siguiente < tamano_lista:
         fila = l[siguiente]
         hora2 = fila.string[fila.start(): fila.end()]
         partes1 = hora2.split(':')
         t1 = datetime(100,1,1, int(partes1[0]), int(partes1[1]), int(partes1[2]))#Inicia speak
-    if i == 0:
-        reemplazar = str(i)  + '\n' + cadena + ",000 --> " + str(t1)[11:19] + ",000" + '\n'#Tiene que haber una mejor manera
+
+    t = function_utilities.sincronizar(t, sync_time)#Añade o resta sync_time segundos al tiempo inicial
+    t1 = function_utilities.sincronizar(t1, sync_time)#Añade o resta sync_time segundos al tiempo final
+
+    #Se toma la parte de hh:mm:ss y se le colocan 0 ms
+    ti = str(t)[11:19] + ",000"
+    tf = str(t1)[11:19] + ",000"
+
+    if i == 0:#Para el primer elemento
+        reemplazar = str(i)  + '\n' + ti + " --> " + tf #+ '\n' x que ahora viene en diferente renglon
     else:
         cadena = '\n' + cadena
-        reemplazar = '\n\n' + str(i) + cadena + ",000 --> " + str(t1)[11:19] + ",000" + '\n'#Tiene que haber una mejor manera
+        reemplazar = '\n\n' + str(i)  + '\n' + ti + " --> " + tf #+ '\n'  x que ahora viene en diferente renglon
 
     i = i + 1
+
     newdata = newdata.replace(cadena, reemplazar)
     print(cadena)
     print(reemplazar)
-
+   
 mensaje =  'hay  %s  lineas de dialogo en el archivo '
-print(mensaje %  i)
+print(mensaje %  i)    
 
 ##Abre el archivo en donde se almacenará el archivo de subtitulos
 f2 = open(fileout,'w')
