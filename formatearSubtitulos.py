@@ -1,8 +1,9 @@
 """============================================================================
 Programa para facilitar el formateo de los subtitulos para los videos a partir
-de el archivo transcript que suministra SAP. Versión 7.
+del archivo transcript que suministra SAP. Versión 8.
 Fecha creación: 27.01.2015 John Jairo Pachon H.
 El formato del archivo srt mas sencillo es algo así:
+
 1
 00:00:10,500 --> 00:00:13,000
 Elephant's Dream
@@ -28,6 +29,7 @@ También hay otro "lenguaje" WebVTT que no usamos por el momento aqui.
 
 SAP me entrega el script así:
 
+WEEK 2, UNIT 1
 00:00:10 Hi and welcome to Week 1, Learning unit 3, RDS Consumption
 and Services. In this learning unit we'd like to show you
 00:00:18 where you can find, browse, download and how to navigate
@@ -49,7 +51,7 @@ In this week, we will be looking into the persistence service and how to use it.
 --------------------------------------------------------------
 
 El ultimo comentario queda mal pues comienza y termina en el mismo momento
-al no haber nada despues del ultimo renglon
+al no haber nada después del ultimo renglon
 En la versión 4 se adiciono funcionalidad para adelantar o retrasar la sincronizacion general
 para corregir problemas de tiempos mal sincronizados
 
@@ -62,8 +64,11 @@ A veces algunos caraceres especiales generan mensaje de error
 Desde el notepad++ se debe guardar el archivo como utf sin BOM
 Menu encoding - Encode in utf 8 without BOM
 
-En esta versión 7 podemos seleccionar el archivo fuente con un cuadro de dialogo
+En versión 7 podemos seleccionar el archivo fuente con un cuadro de dialogo
 dialogo.
+
+En la versión 8 se crea una carpeta files en donde se almacenaran los archivos a procesar,
+para que queden separados de el codigo fuente.
 ============================================================================"""
 
 import os #Para poder mostrar la ruta al archivo
@@ -72,6 +77,9 @@ import function_utilities#Funciones creadas por mi
 from datetime import datetime, date, time, timedelta
 from tkinter import filedialog
 
+
+#Directorio donde se almacenan archivos a procesar
+carpeta = 'files'
 
 #Nombre archivo por defecto a procesar donde estan todos los subtitulos
 #de la semana
@@ -89,8 +97,8 @@ k_expr_separador = '\n(?i)WEEK [\d], (?i)UNIT [\d]'  #(?i)Implica que puede ser 
 k_separador = "||||||||||"
 
 ####################################Inicio Entradas de datos al programa
-#Mostrar cuadro para seleccionar archivo tipo txt o todos los archivos
-filein = filedialog.askopenfilename(filetypes = (("Text files", "*.txt"),("All files", "*.*") ))
+#Mostrar cuadro para seleccionar archivo tipo txt o xml
+filein = filedialog.askopenfilename(filetypes = (("Text files", "*.txt"),("Xml files", "*.xml") ))
 
 sync_time = float(input("Tiempo Sincronización:"))
 #Sin retardo por defecto
@@ -123,6 +131,7 @@ for match in iteratorfile:
     cadena = cadena.replace(",", "_")
     cadena = cadena.replace(" ", "")
     cadena = cadena.replace("\n", "")#Quitar salto de linea del nombre del archivo.
+    cadena = carpeta + os.path.sep + cadena #Para que el archivo quede en una subcarpeta "carpeta"
     archivos.append(cadena)
 
 
@@ -133,7 +142,7 @@ for i, part in enumerate(newdata1.split(k_separador)):
     nombre_archivo = archivos[i-1]
     na = nombre_archivo + ".txt"
     file_tmp = open(na,'w')
-    ##Escribe en el archivo la información separada por unidades
+    #Escribe en el archivo la información separada por unidades(week_unit1.txt, week_unit2.txt ...)
     file_tmp.write(part)
     file_tmp.close()
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
