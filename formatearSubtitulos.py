@@ -1,6 +1,6 @@
 """============================================================================
 Programa para facilitar el formateo de los subtitulos para los videos a partir
-de el archivo transcript que da SAP. Versión 6
+de el archivo transcript que suministra SAP. Versión 7
 Fecha creación: 27.01.2015 John Jairo Pachon H.
 El formato del archivo srt mas sencillo es algo así:
 1
@@ -20,11 +20,12 @@ Se pueden colocar en determinada posicion, estilo, etc. Ejemplo:
 2
 00:00:15,000 --> 00:00:18,000  X1:53 X2:303 Y1:438 Y2:453
 <font color="cyan">At the left we can see...</font>
------------------------------------------------
+--------------------------------------------------------------
 
-También hay otro "lenguaje" WebVTT
+También hay otro "lenguaje" WebVTT que no usamos por el momento aqui.
 
--------------------------------------------------
+--------------------------------------------------------------
+
 SAP me entrega el script así:
 
 00:00:10 Hi and welcome to Week 1, Learning unit 3, RDS Consumption
@@ -45,11 +46,11 @@ In the last week, we looked into how to deploy our first application into the cl
 In this week, we will be looking into the persistence service and how to use it.
 ...
 ...
-
+--------------------------------------------------------------
 
 El ultimo comentario queda mal pues comienza y termina en el mismo momento
 al no haber nada despues del ultimo renglon
-En la versión 4 se puede adelantar o retrasar la sincronizacion general
+En la versión 4 se adiciono funcionalidad para adelantar o retrasar la sincronizacion general
 para corregir problemas de tiempos mal sincronizados
 
 Esta versión debe permitir separar el archivo original en las unidades correspondientes
@@ -60,18 +61,21 @@ Se crea una función (generarArchivo) para el procesamiento del archivo, complet
 A veces algunos caraceres especiales generan mensaje de error
 Desde el notepad++ se debe guardar el archivo como utf sin BOM
 Menu encoding - Encode in utf 8 without BOM
+
+En esta versión 7 podemos seleccionar el archivo fuente con un cuadro de dialogo
+dialogo.
 ============================================================================"""
 
 import os #Para poder mostrar la ruta al archivo
 import re #Para expresiones regulares
 import function_utilities#Funciones creadas por mi
 from datetime import datetime, date, time, timedelta
-
+from tkinter import filedialog
 
 
 #Nombre archivo por defecto a procesar donde estan todos los subtitulos
 #de la semana
-default_file = "week3hana.txt"
+default_file = "todo_hana_week2.txt"
 
 #Sin retardo sincronizacion por defecto
 default_sync_time = 0
@@ -80,22 +84,24 @@ default_sync_time = 0
 archivos = []
 
 #A regex to match the pattern that separate units(videos)
-k_expr_separador = 'WEEK [\d], UNIT [\d]'
+k_expr_separador = '\n(?i)WEEK [\d], (?i)UNIT [\d]'  #(?i)Implica que puede ser mayúsculas o minusculas
 #Separador estandar para facilitar posterior division
 k_separador = "||||||||||"
 
-####################################Entradas de datos al programa
+####################################Inicio Entradas de datos al programa
+#Mostrar cuadro para seleccionar archivo tipo txt o todos los archivos
+filein = filedialog.askopenfilename(filetypes = (("Text files", "*.txt"),("All files", "*.*") ))
+
 sync_time = float(input("Tiempo Sincronización:"))
 #Sin retardo por defecto
 if not sync_time:
     sync_time = float(default_sync_time)
 
-filein = input("Nombre archivo origen:  %s"%default_file )
 #Archivo origen que contiene el timing de los videos que se va a convertir en SRT
 if not filein:
     filein = default_file
-####################################Entradas de datos al programa
-
+print("Archivo procesar:", filein)
+####################################Fin Entradas de datos al programa
 
 
 #Abre el archivo con todos los scripts de la semana
@@ -109,13 +115,14 @@ newdata1 = filedata
 pf = re.compile(k_expr_separador)
 iteratorfile = pf.finditer(filedata)
 for match in iteratorfile:
-    print(match.span())#Punto en donde se encuentra la coincidencia
-    print( match.start())#Donde comienza el string que concuerda
-    print( match.end())#Donde termina el string que concuerda
+    #print(match.span())#Punto en donde se encuentra la coincidencia
+    #print( match.start())#Donde comienza el string que concuerda
+    #print( match.end())#Donde termina el string que concuerda
     cadena = match.string[match.start(): match.end()]
     newdata1 = newdata1.replace(cadena, k_separador)
     cadena = cadena.replace(",", "_")
     cadena = cadena.replace(" ", "")
+    cadena = cadena.replace("\n", "")#Quitar salto de linea del nombre del archivo.
     archivos.append(cadena)
 
 
@@ -135,7 +142,6 @@ for i, part in enumerate(newdata1.split(k_separador)):
 
 #Ejecutar esta parte tantas veces como archivos existan
 ##=============================================================================
-
 #Loop sobre los nombres de los archivos a generar
 for w in archivos:
     function_utilities.generarArchivo(w, sync_time)
