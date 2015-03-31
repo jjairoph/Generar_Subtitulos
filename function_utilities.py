@@ -12,6 +12,10 @@ from datetime import datetime, date, time, timedelta
 #RegEx para identificar hora con minutos y segundos Ej 03:34:10
 k_expresion = '\d\d[:]\d\d[:]\d\d'
 
+#RegEx para identificar número de página
+#{1,2} significa que puede ser uno o dos números
+k_num_pag = '\n\d{1,2}\n'
+
 """============================================================================
 Funcion para tratar de sincronizar los subtitulos con el audio cuando no estan
 sincronizados, se adicionan o se restan segundos al tiempo que viene en el
@@ -43,6 +47,15 @@ def generarArchivo(w, sync_time):
     newdata = filedata1
     p = re.compile(k_expresion)
     iterator = p.finditer(filedata1)
+
+#Para eliminar los números de pagina de newdata
+    p2 = re.compile(k_num_pag)
+    iterator2 = p2.finditer(newdata)
+    reemplazar = '\n'
+    for match1 in iterator2:
+        cadena2 = match1.string[match1.start(): match1.end()]
+        newdata = newdata.replace(cadena2, reemplazar)
+
 
     #Se usa para almacenar en una lista todos los intervalos de tiempo
     #Sirve para obtener el tiempo en el que debe terminar de verse el texto
@@ -90,6 +103,10 @@ def generarArchivo(w, sync_time):
         i = i + 1
 
         newdata = newdata.replace(cadena, reemplazar)
+
+
+
+
 
     mensaje =  'hay  %s  lineas de dialogo en el archivo '
     print(mensaje %  i)

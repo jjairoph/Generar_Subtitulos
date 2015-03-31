@@ -69,6 +69,8 @@ dialogo.
 
 En la versión 8 se crea una carpeta files en donde se almacenaran los archivos a procesar,
 para que queden separados de el codigo fuente.
+
+Versión 9 eliminar número de pagina
 ============================================================================"""
 
 import os #Para poder mostrar la ruta al archivo
@@ -92,7 +94,13 @@ default_sync_time = 0
 archivos = []
 
 #A regex to match the pattern that separate units(videos)
-k_expr_separador = '\n(?i)WEEK [\d], (?i)UNIT [\d]'  #(?i)Implica que puede ser mayúsculas o minusculas
+#Cuando el curso se divide en semanas y estas en unidades
+#k_expr_separador = '\n(?i)WEEK [\d], (?i)UNIT [\d]'  #(?i)Implica que puede ser mayúsculas o minusculas
+
+#Cuando el curso solo tiene unidades
+k_expr_separador = '\n(?i)UNIT [\d]'  #(?i)Implica que puede ser mayúsculas o minusculas
+
+
 #Separador estandar para facilitar posterior division
 k_separador = "||||||||||"
 
