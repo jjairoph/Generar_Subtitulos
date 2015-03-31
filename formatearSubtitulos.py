@@ -70,7 +70,17 @@ dialogo.
 En la versión 8 se crea una carpeta files en donde se almacenaran los archivos a procesar,
 para que queden separados de el codigo fuente.
 
-Versión 9 eliminar número de pagina
+Versión 9 eliminar número de pagina en algunos archivos aparece así:
+00:07:01 His focus is on how to help customers to move to the cloud edition in a simple way, how to
+help to avoid unnecessary pre-investments in hardware and services,
+3
+00:07:12 and of course, how to get a fast proof of the unbelievable advantages of a simplified and very
+fast Business Suite with SAP S/4HANA,
+00:07:24 and finally, how to give customers the choice to drive their own landscape or to use the SAP
+cloud.
+4
+00:08:45 And, also a big note, there soon will be a deep-dive course on S/4HANA here on openSAP.
+00:08:55 So now, let’s start the course with Bernd Leukert.
 ============================================================================"""
 
 import os #Para poder mostrar la ruta al archivo
@@ -93,11 +103,15 @@ default_sync_time = 0
 #Inicializar la lista de los archivos a procesar
 archivos = []
 
+#RegEx para identificar número de página
+#{1,2} significa que puede ser uno o dos números
+k_num_pag = '\n\d{1,2}\n'
+
 #A regex to match the pattern that separate units(videos)
 #Cuando el curso se divide en semanas y estas en unidades
 #k_expr_separador = '\n(?i)WEEK [\d], (?i)UNIT [\d]'  #(?i)Implica que puede ser mayúsculas o minusculas
 
-#Cuando el curso solo tiene unidades
+#Cuando el curso solo tiene unidades y no hay semanas
 k_expr_separador = '\n(?i)UNIT [\d]'  #(?i)Implica que puede ser mayúsculas o minusculas
 
 
@@ -126,6 +140,16 @@ filedata = f.read()
 f.close()
 
 newdata1 = filedata
+
+#Para eliminar los números de pagina de newdata1
+p2 = re.compile(k_num_pag)
+iterator2 = p2.finditer(newdata1)
+reemplazar = '\n'
+for match1 in iterator2:
+    cadena2 = match1.string[match1.start(): match1.end()]
+    newdata1 = newdata1.replace(cadena2, reemplazar)
+
+
 
 #Obtener los nombres de archivos a usar
 pf = re.compile(k_expr_separador)
