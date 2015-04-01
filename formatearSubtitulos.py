@@ -141,14 +141,15 @@ f.close()
 
 newdata1 = filedata
 
-#Para eliminar los números de pagina de newdata1
+
+#Versión 9.1
+# #Para eliminar los números de pagina de newdata1
 p2 = re.compile(k_num_pag)
 iterator2 = p2.finditer(newdata1)
 reemplazar = '\n'
 for match1 in iterator2:
     cadena2 = match1.string[match1.start(): match1.end()]
     newdata1 = newdata1.replace(cadena2, reemplazar)
-
 
 
 #Obtener los nombres de archivos a usar
