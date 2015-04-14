@@ -82,6 +82,7 @@ cloud.
 4
 00:08:45 And, also a big note, there soon will be a deep-dive course on S/4HANA here on openSAP.
 00:08:55 So now, let’s start the course with Bernd Leukert.
+Es la versión 10
 ============================================================================"""
 
 import os #Para poder mostrar la ruta al archivo
