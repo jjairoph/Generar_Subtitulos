@@ -70,7 +70,8 @@ dialogo.
 En la versión 8 se crea una carpeta files en donde se almacenaran los archivos a procesar,
 para que queden separados de el codigo fuente.
 
-Versión 9 eliminar número de pagina en algunos archivos aparece así:
+Versión 9 eliminar número de pagina desde el principio
+en algunos archivos despues de copiar del pdf a texto aparece así:
 00:07:01 His focus is on how to help customers to move to the cloud edition in a simple way, how to
 help to avoid unnecessary pre-investments in hardware and services,
 3
@@ -109,10 +110,10 @@ k_num_pag = '\n\d{1,2}\n'
 
 #A regex to match the pattern that separate units(videos)
 #Cuando el curso se divide en semanas y estas en unidades
-#k_expr_separador = '\n(?i)WEEK [\d], (?i)UNIT [\d]'  #(?i)Implica que puede ser mayúsculas o minusculas
+k_expr_separador = '\n(?i)WEEK [\d], (?i)UNIT [\d]'  #(?i)Implica que puede ser mayúsculas o minusculas
 
 #Cuando el curso solo tiene unidades y no hay semanas
-k_expr_separador = '\n(?i)UNIT [\d]'  #(?i)Implica que puede ser mayúsculas o minusculas
+#k_expr_separador = '\n(?i)UNIT [\d]'  #(?i)Implica que puede ser mayúsculas o minusculas
 
 
 #Separador estandar para facilitar posterior division
