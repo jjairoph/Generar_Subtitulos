@@ -85,33 +85,34 @@ cloud.
 Es la versión 10
 ============================================================================"""
 
-import os #Para poder mostrar la ruta al archivo
-import re #Para expresiones regulares
-import function_utilities#Funciones creadas por mi
+import os  #Para poder mostrar la ruta al archivo
+import re  #Para expresiones regulares
+import function_utilities  #Funciones creadas por mi
 from datetime import datetime, date, time, timedelta
 from tkinter import filedialog
 
 
-#Directorio donde se almacenan archivos a procesar
+'#Directorio donde se almacenan archivos a procesar'
 carpeta = 'files'
 
-#Nombre archivo por defecto a procesar donde estan todos los subtitulos
-#de la semana
+'#Nombre archivo por defecto a procesar donde estan todos los subtitulos'
+'#de la semana'
 default_file = "todo_hana_week2.txt"
 
-#Sin retardo sincronizacion por defecto
+'#Sin retardo sincronizacion por defecto'
 default_sync_time = 0
 
-#Inicializar la lista de los archivos a procesar
+'#Inicializar la lista de los archivos a procesar'
 archivos = []
 
-#RegEx para identificar número de página
-#{1,2} significa que puede ser uno o dos números
+'#RegEx para identificar número de página'
+'#{1,2} significa que puede ser uno o dos números'
 k_num_pag = '\n\d{1,2}\n'
 
 #A regex to match the pattern that separate units(videos)
 #Cuando el curso se divide en semanas y estas en unidades
-k_expr_separador = '\n(?i)WEEK [\d], (?i)UNIT [\d]'  #(?i)Implica que puede ser mayúsculas o minusculas
+k_expr_separador = '\n(?i)WEEK [\d], (?i)UNIT [\d]'  #(?i)Implica que puede ser mayúsculas o minusculas'
+
 
 #Cuando el curso solo tiene unidades y no hay semanas
 #k_expr_separador = '\n(?i)UNIT [\d]'  #(?i)Implica que puede ser mayúsculas o minusculas
