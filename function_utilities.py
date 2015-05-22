@@ -87,10 +87,10 @@ def generarArchivo(w, sync_time):
         '#fin = ''    # Cuando hora y texto vienen en diferente renglon'
 
         if i == 0:  # Para el primer elemento
-            reemplazar = str(i)  + '\n' + ti + " --> " + tf + fin
+            reemplazar = str(i) + '\n' + ti + " --> " + tf + fin
         else:  # Del segundo elemento en adelante
             cadena = '\n' + cadena
-            reemplazar = '\n\n' + str(i)  + '\n' + ti + " --> " + tf + fin
+            reemplazar = '\n\n' + str(i) + '\n' + ti + " --> " + tf + fin
 
         i = i + 1
 
