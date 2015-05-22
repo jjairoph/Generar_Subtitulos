@@ -92,20 +92,20 @@ def generarArchivo(w, sync_time):
             cadena = '\n' + cadena
             reemplazar = '\n\n' + str(i) + '\n' + ti + " --> " + tf + fin
 
-        i = i + 1
+        i += 1
 
         newdata = newdata.replace(cadena, reemplazar)
 
 
     mensaje ='hay  %s  lineas de dialogo en el archivo '
-    print(mensaje %  i)
+    print(mensaje % i)
 
     '# Abre el archivo en donde se almacenará el archivo de subtitulos'
-    f2 = open(fileout,'w')
+    f2 = open(fileout, 'w')
     '# Escribe en el archivo la información sin los caracteres que se eliminaron'
     f2.write(newdata)
     f2.close()
     '# Mostrar en que lugar quedo el resultado'
     archivo_salida = os.getcwd() + "\\" + f2.name
-    print ("Archivo procesado:", archivo_salida)
+    print("Archivo procesado:", archivo_salida)
     '#os.remove(filein)#Borrar el archivo txt una vez fue leido'
