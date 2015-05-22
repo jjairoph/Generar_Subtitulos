@@ -38,7 +38,7 @@ segundos a adelantar o atrasar
 
 def generarArchivo(w, sync_time):
     filein = w + ".txt"
-    f = open(filein,'r')
+    f = open(filein, 'r')
 #    f = open(filein, encoding="utf8")#Toco modificar había un caracter de continuación raro
     filedata1 = f.read()
     f.close()
@@ -65,15 +65,15 @@ def generarArchivo(w, sync_time):
         print( match.end())#Donde termina el string que concuerda"""
         cadena = match.string[match.start(): match.end()]
         partes = cadena.split(':')
-        #print(partes)
-        t = datetime(100,1,1, int(partes[0]), int(partes[1]), int(partes[2]))#Inicia speak
+        '# print(partes)'
+        t = datetime(100,1,1, int(partes[0]), int(partes[1]), int(partes[2]))  # Inicia speak
         siguiente = i+1
 
         if siguiente < tamano_lista:
             fila = l[siguiente]
             hora2 = fila.string[fila.start(): fila.end()]
             partes1 = hora2.split(':')
-            t1 = datetime(100,1,1, int(partes1[0]), int(partes1[1]), int(partes1[2]))#Inicia speak
+            t1 = datetime(100,1,1, int(partes1[0]), int(partes1[1]), int(partes1[2]))  # Inicia speak
 
         t = sincronizar(t, sync_time)  # Añade o resta sync_time segundos al tiempo inicial
         t1 = sincronizar(t1, sync_time)  # Añade o resta sync_time segundos al tiempo final
@@ -108,4 +108,4 @@ def generarArchivo(w, sync_time):
     '# Mostrar en que lugar quedo el resultado'
     archivo_salida = os.getcwd() + "\\" + f2.name
     print ("Archivo procesado:", archivo_salida)
-    #os.remove(filein)#Borrar el archivo txt una vez fue leido
+    '#os.remove(filein)#Borrar el archivo txt una vez fue leido'
