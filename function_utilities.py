@@ -66,14 +66,14 @@ def generarArchivo(w, sync_time):
         cadena = match.string[match.start(): match.end()]
         partes = cadena.split(':')
         '# print(partes)'
-        t = datetime(100,1,1, int(partes[0]), int(partes[1]), int(partes[2]))  # Inicia speak
+        t = datetime(100, 1, 1, int(partes[0]), int(partes[1]), int(partes[2]))  # Inicia speak
         siguiente = i+1
 
         if siguiente < tamano_lista:
             fila = l[siguiente]
             hora2 = fila.string[fila.start(): fila.end()]
             partes1 = hora2.split(':')
-            t1 = datetime(100,1,1, int(partes1[0]), int(partes1[1]), int(partes1[2]))  # Inicia speak
+            t1 = datetime(100, 1, 1, int(partes1[0]), int(partes1[1]), int(partes1[2]))  # Inicia speak
 
         t = sincronizar(t, sync_time)  # Añade o resta sync_time segundos al tiempo inicial
         t1 = sincronizar(t1, sync_time)  # Añade o resta sync_time segundos al tiempo final
@@ -84,7 +84,7 @@ def generarArchivo(w, sync_time):
 
 
         fin = '\n'  # Cuando hora y texto estan en mismo renglon
-        #fin = ''    # Cuando hora y texto vienen en diferente renglon
+        '#fin = ''    # Cuando hora y texto vienen en diferente renglon'
 
         if i == 0:  # Para el primer elemento
             reemplazar = str(i)  + '\n' + ti + " --> " + tf + fin
