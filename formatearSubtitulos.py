@@ -43,7 +43,8 @@ WEEK 2, UNIT 1
 00:00:09
 Welcome to week 2 of the SAP HANA Cloud Platform course.
 00:00:13
-In the last week, we looked into how to deploy our first application into the cloud with the HANA Cloud Platform.
+In the last week, we looked into how to deploy our first application into the
+cloud with the HANA Cloud Platform.
 00:00:21
 In this week, we will be looking into the persistence service and how to use it.
 ...
@@ -87,18 +88,17 @@ Actualice pycharm community edition a la version 4.5
 Se arregla el conflicto
 ============================================================================"""
 
-import os #Para poder mostrar la ruta al archivo'
-import re #Para expresiones regulares'
-import function_utilities#Funciones creadas por mi
-from datetime import datetime, date, time, timedelta
+import os  # Mostrar la ruta al archivo
+import re  # Expresiones regulares
+import function_utilities  # Funciones creadas por mi
 from tkinter import filedialog
 
 
 '#Directorio donde se almacenan archivos a procesar'
 carpeta = 'files'
 
-'#Nombre archivo por defecto a procesar donde estan todos los subtitulos'
-#de la semana
+"""Nombre archivo por defecto a procesar donde estan todos los subtitulos'
+de la semana"""
 default_file = "todo_hana_week2.txt"
 
 '#Sin retardo sincronizacion por defecto'
@@ -113,41 +113,41 @@ k_num_pag = '\n\d{1,2}\n'
 
 '#A regex to match the pattern that separate units(videos)'
 '#Cuando el curso se divide en semanas y estas en unidades'
-k_expr_separador = '\n(?i)WEEK [\d], (?i)UNIT [\d]'  #(?i)Implica que puede ser mayúsculas o minusculas
+k_expr_separador = '\n(?i)WEEK [\d], (?i)UNIT [\d]'  # (?i) Implica que puede ser mayúsculas o minusculas
 
 '#Cuando el curso solo tiene unidades y no hay semanas'
-#k_expr_separador = '\n(?i)UNIT [\d]'  #(?i)Implica que puede ser mayúsculas o minusculas
+# k_expr_separador = '\n(?i)UNIT [\d]'  #(?i)Implica que puede ser mayúsculas o minusculas
 
 
 '#Separador estandar para facilitar posterior division'
 k_separador = "||||||||||"
 
-####################################Inicio Entradas de datos al programa
-#Mostrar cuadro para seleccionar archivo tipo txt o xml
-filein = filedialog.askopenfilename(filetypes = (("Text files", "*.txt"),("Xml files", "*.xml") ))
+'####################################Inicio Entradas de datos al programa'
+'#Mostrar cuadro para seleccionar archivo tipo txt o xml'
+filein = filedialog.askopenfilename(filetypes=(("Text files", "*.txt"), ("Xml files", "*.xml")))
 
 sync_time = float(input("Tiempo Sincronización:"))
-#Sin retardo por defecto
+'#Sin retardo por defecto'
 if not sync_time:
     sync_time = float(default_sync_time)
 
-#Archivo origen que contiene el timing de los videos que se va a convertir en SRT
+'#Archivo origen que contiene el timing de los videos que se va a convertir en SRT'
 if not filein:
     filein = default_file
 print("Archivo procesar:", filein)
-####################################Fin Entradas de datos al programa
+'####################################Fin Entradas de datos al programa'
 
 
-#Abre el archivo con todos los scripts de la semana
-f = open(filein, encoding="utf8")#Toco modificar había un caracter de continuación raro
+'#Abre el archivo con todos los scripts de la semana'
+f = open(filein, encoding="utf8")  # Toco modificar había un caracter de continuación raro
 filedata = f.read()
 f.close()
 
 newdata1 = filedata
 
 
-#Versión 9.1
-# #Para eliminar los números de pagina de newdata1
+"""Versión 9.1
+Para eliminar los números de pagina de newdata1"""
 p2 = re.compile(k_num_pag)
 iterator2 = p2.finditer(newdata1)
 reemplazar = '\n'
@@ -156,40 +156,36 @@ for match1 in iterator2:
     newdata1 = newdata1.replace(cadena2, reemplazar)
 
 
-#Obtener los nombres de archivos a usar
+'#Obtener los nombres de archivos a usar'
 pf = re.compile(k_expr_separador)
 iteratorfile = pf.finditer(filedata)
 for match in iteratorfile:
-    #print(match.span())#Punto en donde se encuentra la coincidencia
-    #print( match.start())#Donde comienza el string que concuerda
-    #print( match.end())#Donde termina el string que concuerda
+    """print(match.span())#Punto en donde se encuentra la coincidencia
+    print( match.start())#Donde comienza el string que concuerda
+    print( match.end())#Donde termina el string que concuerda"""
     cadena = match.string[match.start(): match.end()]
     newdata1 = newdata1.replace(cadena, k_separador)
     cadena = cadena.replace(",", "_")
     cadena = cadena.replace(" ", "")
-    cadena = cadena.replace("\n", "")#Quitar salto de linea del nombre del archivo.
-    cadena = carpeta + os.path.sep + cadena #Para que el archivo quede en una subcarpeta "carpeta"
+    cadena = cadena.replace("\n", "")  # Quitar salto de linea del nombre del archivo.
+    cadena = carpeta + os.path.sep + cadena  # Para que el archivo quede en una subcarpeta "carpeta"
     archivos.append(cadena)
 
-
-#Ahora si dividimos el archivo y generamos tantos archivos txt como sea necesario
-#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+"""Ahora si dividimos el archivo y generamos tantos archivos txt como sea necesario
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"""
 for i, part in enumerate(newdata1.split(k_separador)):
-    if not part.strip():continue # make sure its not empty
+    if not part.strip(): continue  # make sure its not empty
     nombre_archivo = archivos[i-1]
     na = nombre_archivo + ".txt"
-    file_tmp = open(na,'w')
-    #Escribe en el archivo la información separada por unidades(week_unit1.txt, week_unit2.txt ...)
+    file_tmp = open(na, 'w')
+    '# Escribe en el archivo la información separada por unidades(week_unit1.txt, week_unit2.txt ...)'
     file_tmp.write(part)
     file_tmp.close()
-#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
 
-
-
-#Ejecutar esta parte tantas veces como archivos existan
-##=============================================================================
-#Loop sobre los nombres de los archivos a generar
+"""Ejecutar esta parte tantas veces como archivos existan
+=============================================================================
+Loop sobre los nombres de los archivos a generar"""
 for w in archivos:
     function_utilities.generarArchivo(w, sync_time)
-
-##=============================================================================
+'#==========================================================================='
