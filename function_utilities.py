@@ -7,7 +7,7 @@ __author__ = 'John Jairo Pachon H.'
 
 import os  # Mostrar la ruta al archivo
 import re  # Expresiones regulares
-from datetime import datetime, date, time, timedelta
+from datetime import datetime, timedelta
 
 '# RegEx para identificar hora con minutos y segundos Ej 03:34:10'
 k_expresion = '\d\d[:]\d\d[:]\d\d'
@@ -81,7 +81,6 @@ def generarArchivo(w, sync_time):
         '# Se toma la parte de hh:mm:ss y se le colocan 0 ms'
         ti = str(t)[11:19] + ",000"
         tf = str(t1)[11:19] + ",000"
-
 
         fin = '\n'  # Cuando hora y texto estan en mismo renglon
         '#fin = ''    # Cuando hora y texto vienen en diferente renglon'
