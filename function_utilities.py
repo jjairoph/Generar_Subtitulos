@@ -2,6 +2,8 @@
 Archivo para almacenar algunas funciones utiles para facilitar el procesamiento
 de los subtitulos.
 Fecha creación: 10.02.2015 John Jairo Pachon H.
+Modificacion 26.07.2015 En el patrón que separa el tiempo se añade ; para
+corregir el problema de algunos errores en donde se uso este separador y no :
 ============================================================================"""
 __author__ = 'John Jairo Pachon H.'
 
@@ -10,7 +12,7 @@ import re  # Expresiones regulares
 from datetime import datetime, timedelta
 
 '# RegEx para identificar hora con minutos y segundos Ej 03:34:10'
-k_expresion = '\d\d[:]\d\d[:]\d\d'
+k_expresion = '\d\d[:;]\d\d[:;]\d\d'
 
 
 """============================================================================
