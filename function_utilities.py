@@ -12,7 +12,7 @@ import re  # Expresiones regulares
 from datetime import datetime, timedelta
 
 '# RegEx para identificar hora con minutos y segundos Ej 03:34:10'
-k_expresion = '\d\d[:;]\d\d[:;]\d\d'
+k_expresion = '\d\d[:;.]\d\d[:;.]\d\d'
 
 
 """============================================================================
@@ -34,7 +34,8 @@ def sincronizar(t, tiempo):
 """============================================================================
 Funcion para generar un archivo de subtitulos .srt
 Recibe como parametro el nombre del archivo txt a procesar y un número de
-segundos a adelantar o atrasar
+segundos a adelantar o atrasar.
+Aquí deben llegar los intervalos de tiempo perfectos
 ============================================================================"""
 
 
@@ -47,7 +48,6 @@ def generarArchivo(w, sync_time):
 
     '#Archivo en el que quedaran los subtitulos en formato srt'
     fileout = w + ".srt"
-    newdata = filedata1
     p = re.compile(k_expresion)
     iterator = p.finditer(filedata1)
 
@@ -95,8 +95,7 @@ def generarArchivo(w, sync_time):
 
         i += 1
 
-        newdata = newdata.replace(cadena, reemplazar)
-
+        filedata1 = filedata1.replace(cadena, reemplazar)
 
     mensaje ='hay  %s  lineas de dialogo en el archivo '
     print(mensaje % i)
@@ -104,7 +103,7 @@ def generarArchivo(w, sync_time):
     '# Abre el archivo en donde se almacenará el archivo de subtitulos'
     f2 = open(fileout, 'w')
     '# Escribe en el archivo la información sin los caracteres que se eliminaron'
-    f2.write(newdata)
+    f2.write(filedata1)
     f2.close()
     '# Mostrar en que lugar quedo el resultado'
     archivo_salida = os.getcwd() + "\\" + f2.name

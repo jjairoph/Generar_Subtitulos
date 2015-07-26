@@ -109,6 +109,10 @@ default_sync_time = 0
 '#Inicializar la lista de los archivos a procesar'
 archivos = []
 
+'#Corregir errores separadores tiempo'
+k_separador_tiempo = '\d\d[:;.]\d\d[:;.]\d\d'
+
+
 '#RegEx para identificar número de página'
 '#{1,2} significa que puede ser uno o dos números'
 k_num_pag = '\n\d{1,2}\n'
@@ -157,6 +161,17 @@ for match1 in iterator2:
     cadena2 = match1.string[match1.start(): match1.end()]
     newdata1 = newdata1.replace(cadena2, reemplazar)
 
+"""Versión 13
+Corregir errores con el separador de horas, minutos, segundos"""
+p2 = re.compile(k_separador_tiempo)
+iterator2 = p2.finditer(newdata1)
+reemplazar = ':'
+for match1 in iterator2:
+    cadenaOri = match1.string[match1.start(): match1.end()]
+    '#Vamos a reemplazar :,;,. por : antes de separarlos'
+    '#resultado = re.sub(find, replaceString, resultado) Es la estructura para reemplazar'
+    cadenaOK = re.sub("[:;.]", ":", cadenaOri)
+    newdata1 = newdata1.replace(cadenaOri, cadenaOK)
 
 '#Obtener los nombres de archivos a usar'
 pf = re.compile(k_expr_separador)
