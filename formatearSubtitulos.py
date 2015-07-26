@@ -109,13 +109,16 @@ default_sync_time = 0
 '#Inicializar la lista de los archivos a procesar'
 archivos = []
 
-'#Corregir errores separadores tiempo'
-k_separador_tiempo = '\d\d[:;.]\d\d[:;.]\d\d'
-
+'#Corregir errores separadores tiempo Version 13'
+'#Al principio de la linea, con formato de tiempo'
+k_formatos_tiempo = '\n\d\d[:;.]\d\d[:;.]\d\d'
+k_separadores_tiempo = '[:;.]'
+k_separador_correcto_tiempo = ":"
 
 '#RegEx para identificar número de página'
 '#{1,2} significa que puede ser uno o dos números'
 k_num_pag = '\n\d{1,2}\n'
+k_salto_linea = '\n'
 
 '#A regex to match the pattern that separate units(videos)'
 '#Cuando el curso se divide en semanas y estas en unidades'
@@ -123,7 +126,6 @@ k_expr_separador = '\n(?i)WEEK [\d], (?i)UNIT [\d]'  # (?i) Implica que puede se
 
 '#Cuando el curso solo tiene unidades y no hay semanas'
 # k_expr_separador = '\n(?i)UNIT [\d]'  #(?i)Implica que puede ser mayúsculas o minusculas
-
 
 '#Separador estandar para facilitar posterior division'
 k_separador = "||||||||||"
@@ -156,22 +158,22 @@ newdata1 = filedata
 Para eliminar los números de pagina de newdata1"""
 p2 = re.compile(k_num_pag)
 iterator2 = p2.finditer(newdata1)
-reemplazar = '\n'
+
 for match1 in iterator2:
     cadena2 = match1.string[match1.start(): match1.end()]
-    newdata1 = newdata1.replace(cadena2, reemplazar)
+    newdata1 = newdata1.replace(cadena2, k_salto_linea)
 
 """Versión 13
 Corregir errores con el separador de horas, minutos, segundos"""
-p2 = re.compile(k_separador_tiempo)
+p2 = re.compile( k_formatos_tiempo )
 iterator2 = p2.finditer(newdata1)
-reemplazar = ':'
 for match1 in iterator2:
     cadenaOri = match1.string[match1.start(): match1.end()]
     '#Vamos a reemplazar :,;,. por : antes de separarlos'
     '#resultado = re.sub(find, replaceString, resultado) Es la estructura para reemplazar'
-    cadenaOK = re.sub("[:;.]", ":", cadenaOri)
+    cadenaOK = re.sub(k_separadores_tiempo, k_separador_correcto_tiempo, cadenaOri)
     newdata1 = newdata1.replace(cadenaOri, cadenaOK)
+
 
 '#Obtener los nombres de archivos a usar'
 pf = re.compile(k_expr_separador)
@@ -184,7 +186,7 @@ for match in iteratorfile:
     newdata1 = newdata1.replace(cadena, k_separador)
     cadena = cadena.replace(",", "_")
     cadena = cadena.replace(" ", "")
-    cadena = cadena.replace("\n", "")  # Quitar salto de linea del nombre del archivo.
+    cadena = cadena.replace(k_salto_linea, "")  # Quitar salto de linea del nombre del archivo.
     cadena = carpeta + os.path.sep + cadena  # Para que el archivo quede en una subcarpeta "carpeta"
     archivos.append(cadena)
 

@@ -12,7 +12,9 @@ import re  # Expresiones regulares
 from datetime import datetime, timedelta
 
 '# RegEx para identificar hora con minutos y segundos Ej 03:34:10'
-k_expresion = '\d\d[:;.]\d\d[:;.]\d\d'
+k_expresion = '\d\d[:]\d\d[:]\d\d'
+k_salto_linea = '\n'
+k_separador_intervalo = " --> "
 
 
 """============================================================================
@@ -35,9 +37,9 @@ def sincronizar(t, tiempo):
 Funcion para generar un archivo de subtitulos .srt
 Recibe como parametro el nombre del archivo txt a procesar y un número de
 segundos a adelantar o atrasar.
-Aquí deben llegar los intervalos de tiempo perfectos
+Aquí deben llegar los intervalos de tiempo perfectos, se corrigen en el
+programa principal formatearSubtitulos
 ============================================================================"""
-
 
 def generarArchivo(w, sync_time):
     filein = w + ".txt"
@@ -84,14 +86,14 @@ def generarArchivo(w, sync_time):
         ti = str(t)[11:19] + ",000"
         tf = str(t1)[11:19] + ",000"
 
-        fin = '\n'  # Cuando hora y texto estan en mismo renglon
+        fin = k_salto_linea  # Cuando hora y texto estan en mismo renglon
         '#fin = ''    # Cuando hora y texto vienen en diferente renglon'
 
         if i == 0:  # Para el primer elemento
-            reemplazar = str(i) + '\n' + ti + " --> " + tf + fin
+            reemplazar = str(i) + k_salto_linea + ti + k_separador_intervalo + tf + fin
         else:  # Del segundo elemento en adelante
-            cadena = '\n' + cadena
-            reemplazar = '\n\n' + str(i) + '\n' + ti + " --> " + tf + fin
+            cadena = k_salto_linea + cadena
+            reemplazar = k_salto_linea + k_salto_linea + str(i) + k_salto_linea + ti + k_separador_intervalo + tf + fin
 
         i += 1
 
