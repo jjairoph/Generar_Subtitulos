@@ -12,6 +12,7 @@ import re  # Expresiones regulares
 from datetime import datetime, timedelta
 
 '# RegEx para identificar hora con minutos y segundos Ej 03:34:10'
+'# No es necesario usar ;. pues se corrige antes de dividir el archivo'
 k_expresion = '\d\d[:]\d\d[:]\d\d'
 k_salto_linea = '\n'
 k_separador_intervalo = " --> "
@@ -22,8 +23,6 @@ Funcion para tratar de sincronizar los subtitulos con el audio cuando no estan
 sincronizados, se adicionan o se restan segundos al tiempo que viene en el
 archivo
 ============================================================================"""
-
-
 def sincronizar(t, tiempo):
     if not tiempo:
         tiempo = 0
@@ -38,9 +37,8 @@ Funcion para generar un archivo de subtitulos .srt
 Recibe como parametro el nombre del archivo txt a procesar y un número de
 segundos a adelantar o atrasar.
 Aquí deben llegar los intervalos de tiempo perfectos, se corrigen en el
-programa principal formatearSubtitulos
+programa principal formatearSubtitulos.py
 ============================================================================"""
-
 def generarArchivo(w, sync_time):
     filein = w + ".txt"
     f = open(filein, 'r')
@@ -69,7 +67,6 @@ def generarArchivo(w, sync_time):
         print( match.end())#Donde termina el string que concuerda"""
         cadena = match.string[match.start(): match.end()]
         partes = cadena.split(':')
-        '# print(partes)'
         t = datetime(100, 1, 1, int(partes[0]), int(partes[1]), int(partes[2]))  # Inicia speak
         siguiente = i+1
 

@@ -95,24 +95,10 @@ import re  # Expresiones regulares
 import function_utilities  # Funciones creadas por mi
 from tkinter import filedialog
 
-
-'#Directorio donde se almacenan archivos a procesar'
-carpeta = 'files'
-
-"""Nombre archivo por defecto a procesar donde estan todos los subtitulos'
-de la semana"""
-default_file = "todo_hana_week2.txt"
-
-'#Sin retardo sincronizacion por defecto'
-default_sync_time = 0
-
-'#Inicializar la lista de los archivos a procesar'
-archivos = []
-
 '#Corregir errores separadores tiempo Version 13'
 '#Al principio de la linea, con formato de tiempo'
-k_formatos_tiempo = '\n\d\d[:;.]\d\d[:;.]\d\d'
-k_separadores_tiempo = '[:;.]'
+k_formatos_tiempo = '\n\d\d[:;.,]\d\d[:;.,]\d\d'
+k_separadores_tiempo = '[:;.,]'
 k_separador_correcto_tiempo = ":"
 
 '#RegEx para identificar número de página'
@@ -129,6 +115,20 @@ k_expr_separador = '\n(?i)WEEK [\d], (?i)UNIT [\d]'  # (?i) Implica que puede se
 
 '#Separador estandar para facilitar posterior division'
 k_separador = "||||||||||"
+
+'#Directorio donde se almacenan archivos a procesar'
+carpeta = 'files'
+
+"""Nombre archivo por defecto a procesar donde estan todos los subtitulos'
+de la semana"""
+default_file = "todo_hana_week2.txt"
+
+'#Sin retardo sincronizacion por defecto'
+default_sync_time = 0
+
+'#Inicializar la lista de los archivos a procesar'
+archivos = []
+
 
 '####################################Inicio Entradas de datos al programa'
 '#Mostrar cuadro para seleccionar archivo tipo txt o xml'
